@@ -5,15 +5,21 @@ from starlette.staticfiles import StaticFiles
 import gspread
 from google.oauth2.service_account import Credentials
 
-  
-app = FastAPI()
+import os
+import json
+from google.oauth2.service_account import Credentials
+import gspread
+
+app=FastAPI()
 
 scopes = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_file("polar-ensign-459616-t8-6f2ce5a2c67c.json", scopes=scopes)
+
+creds_dict = json.loads(os.environ["GOOGLE_CREDENTIALS"])
+creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
 
 client = gspread.authorize(creds)
 
